@@ -22,20 +22,27 @@
 
 #It requires the ghostscript
 
-max=36
+#a primeira input deve ser o nome do pdf e a segunda o número final de páginas
+#se a última página for em branco, não a contabilize
+pdf=$1
+max=$2
 ini=1
 fim=3
 
+#neste for o ghostscript quebra a cada 3 páginas em arquivos separados com nomes padrões
 for ((a=1; a<= $max; a++))
 do
 
-	gs -dBATCH -dNOPAUSE -sDEVICE=pdfwrite -dFirstPage=$ini -dLastPage=$fim -sOutputFile=page$a.pdf fichas.pdf
+	gs -dBATCH -dNOPAUSE -sDEVICE=pdfwrite -dFirstPage=$ini -dLastPage=$fim -sOutputFile=page$a.pdf $pdf 
 
 ((ini+=3))
 ((fim+=3))
 
 done
 
+mkdir -p out
+
+#neste for a 4a linha, 1a cauda do arquivo é lida e usada pra renomear cada pdf
 for i in $(ls page*.pdf); do
 	#evince $i 
 	pdftotext $i
@@ -46,6 +53,4 @@ for i in $(ls page*.pdf); do
 	mv $i "out/$equipe".pdf
 	rm $name.txt
 done
-
-# cat page12.txt | head -n 4 | tail -n 1
 
