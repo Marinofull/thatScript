@@ -54,3 +54,9 @@ for i in $(ls page*.pdf); do
 	rm $name.txt
 done
 
+#se é passado 'y' no 3o parametro ele abre cada saída pra ser conferida no olho msm
+if [ "$3" = y ]; then
+    for i in $(ls out/*pdf); do
+        evince $i
+    done
+fi
