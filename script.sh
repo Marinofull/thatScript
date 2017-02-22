@@ -1,6 +1,6 @@
 #The MIT License (MIT)
 #
-#Copyright (c) 2015 Marino Souza and Nilton Vasques 
+#Copyright (c) 2015 Marino Souza and Nilton Vasques
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -30,10 +30,10 @@ ini=1
 fim=3
 
 #neste for o ghostscript quebra a cada 3 páginas em arquivos separados com nomes padrões
-for ((a=1; a<= $max; a++))
+for ((a=1; fim<= $max; a++))
 do
 
-	gs -dBATCH -dNOPAUSE -sDEVICE=pdfwrite -dFirstPage=$ini -dLastPage=$fim -sOutputFile=page$a.pdf $pdf 
+	gs -dBATCH -dNOPAUSE -sDEVICE=pdfwrite -dFirstPage=$ini -dLastPage=$fim -sOutputFile=page$a.pdf $pdf
 
 ((ini+=3))
 ((fim+=3))
@@ -44,11 +44,11 @@ mkdir -p out
 
 #neste for a 4a linha, 1a cauda do arquivo é lida e usada pra renomear cada pdf
 for i in $(ls page*.pdf); do
-	#evince $i 
+	#evince $i
 	pdftotext $i
-	name=$(echo $i | cut -f1 -d.)
+	name=$(echo $i | cut -f1 -d-)
 	echo $name
-	equipe=$(cat $name.txt | head -n 4 | tail -n 1)
+	equipe=$(cat $name.txt | head -n 1 | cut -f2 -d-)
 	echo $equipe
 	mv $i "out/$equipe".pdf
 	rm $name.txt
