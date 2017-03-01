@@ -33,10 +33,11 @@ fim=3
 for ((a=1; fim<= $max; a++))
 do
 
-	gs -dBATCH -dNOPAUSE -sDEVICE=pdfwrite -dFirstPage=$ini -dLastPage=$fim -sOutputFile=page$a.pdf $pdf
+    gs -dBATCH -dNOPAUSE -sDEVICE=pdfwrite -dFirstPage=$ini -dLastPage=$fim -sOutputFile=page$a.pdf $pdf
+    #gs -dBATCH -sOutputFile=page$a.pdf -dFirstPage=$ini -dLastPage=$fim -sDEVICE=pdfwrite $pdf
 
-((ini+=3))
-((fim+=3))
+    ((ini+=3))
+    ((fim+=3))
 
 done
 
@@ -44,14 +45,14 @@ mkdir -p out
 
 #neste for a 4a linha, 1a cauda do arquivo é lida e usada pra renomear cada pdf
 for i in $(ls page*.pdf); do
-	#evince $i
-	pdftotext $i
-	name=$(echo $i | cut -f1 -d-)
-	echo $name
-	equipe=$(cat $name.txt | head -n 1 | cut -f2 -d-)
-	echo $equipe
-	mv $i "out/$equipe".pdf
-	rm $name.txt
+    #evince $i
+    pdftotext $i
+    name=$(echo $i | cut -f1 -d.)
+    echo $name
+    equipe=$(cat $name.txt | head -n 1 | cut -f2 -d-)
+    echo $equipe
+    mv $i "out/$equipe".pdf
+    rm $name.txt
 done
 
 #se é passado 'y' no 3o parametro ele abre cada saída pra ser conferida no olho msm
